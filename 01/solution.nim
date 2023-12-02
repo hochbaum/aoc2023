@@ -30,14 +30,15 @@ proc calcLine(line: string, withWords: bool): int =
                  re"\d|one|two|three|four|five|six|seven|eight|nine"
             else:
                  re"\d"
-        matches = map(findAll(line, regex), wordToDigit)
+        matches = findAll(line, regex)
+            .map(wordToDigit)
 
     result = (matches[0] & matches[^1]).parseInt
 
 let 
     lines = readFile("./01/input.txt").splitlines()
-    withoutWords = sum(map(lines, proc (line: string): int = calcLine(line, false)))
-    withWords = sum(map(lines, proc (line: string): int = calcLine(line, true)))  
+    withoutWords = lines.map(proc (line: string): int = calcLine(line, false)).sum()
+    withWords = lines.map(proc (line: string): int = calcLine(line, true)).sum()
 
 echo "Part 1 result: " & $withoutWords
 echo "Part 2 result: " & $withWords
